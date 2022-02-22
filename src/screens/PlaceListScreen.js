@@ -1,11 +1,19 @@
+import * as addressAction from '../store/places.actions';
+
+import React, {useEffect, useLayoutEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+
 import {FlatList} from 'react-native';
 import PlaceItem from '../components/PlaceItem/index';
-import React from 'react';
-import {useSelector} from 'react-redux';
 
 const PlaceListScreen = ({navigation}) => {
+  const dispatch = useDispatch();
   const places = useSelector(state => state.places.places);
   console.warn(places);
+
+  useEffect(() => {
+    dispatch(addressAction.loadPlaces());
+  }, []);
 
   const onSelectDetail = () => {
     navigation.navigate('Detalle');
@@ -15,7 +23,7 @@ const PlaceListScreen = ({navigation}) => {
     <PlaceItem
       title={item.title}
       image={item.image}
-      address="123 street, city, country"
+      address={item.address}
       onSelect={onSelectDetail}
     />
   );
